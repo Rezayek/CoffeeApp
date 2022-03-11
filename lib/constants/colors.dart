@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-const Color coffeeColor = Color(0x006f4e37);
-const Color blackCoffeeColor = Color(0x003b302f);
-const Color brownCoffeeColor = Color(0x004a2c2a);
-const Color orangeCoffeeColor = Color(0x00883300);
-const Color coldBrewCoffeeColor = Color(0x00785736);
-const Color freshlyRoastedCoffeeColor = Color(0x00663322);
-const Color irishCoffeeColor = Color(0x0062422b);
-const Color coffeeCakeColor = Color(0x00eee9d3);
-const Color arabicCoffeeColor = Color(0x006f4d3f);
-const Color oldCoffeeColor = Color(0x00704241);
+const Color coffeeColor = Color.fromARGB(255, 111, 78, 55);
+const Color blackCoffeeColor = Color.fromARGB(255, 59, 48, 47);
+const Color brownCoffeeColor = Color.fromARGB(255, 74, 44, 42);
+const Color orangeCoffeeColor = Color.fromARGB(255, 136, 52, 0);
+const Color coldBrewCoffeeColor = Color.fromARGB(255, 120, 87, 54);
+const Color freshlyRoastedCoffeeColor = Color.fromARGB(255, 102, 51, 34);
+const Color irishCoffeeColor = Color.fromARGB(255, 98, 66, 43);
+const Color coffeeCakeColor = Color.fromARGB(255, 238, 233, 211);
+const Color arabicCoffeeColor = Color.fromARGB(255, 111, 77, 63);
+const Color oldCoffeeColor = Color.fromARGB(255, 112, 66, 65);

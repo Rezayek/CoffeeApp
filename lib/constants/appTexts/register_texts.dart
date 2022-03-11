@@ -1,0 +1,10 @@
+const String registerText = 'Register';
+const String userFirstNameText = 'first name';
+const String userSecondNameText = 'second name';
+const String userEmailText = 'email';
+const String userPasswordText = 'password';
+const String userAdressText = 'address';
+const String userPhoneNumber = 'phone number';
+const String userContionsText = "I'have accepte all conditions";
+const String userRegisterBtnText = 'Register';
+const String userClickHere = 'click Here';
