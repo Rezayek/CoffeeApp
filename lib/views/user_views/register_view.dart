@@ -255,7 +255,7 @@ class _RegisterViewState extends State<RegisterView> {
                           const Text(
                             userContionsText,
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 14,
                               color: coffeeCakeColor,
                             ),
                           ),
