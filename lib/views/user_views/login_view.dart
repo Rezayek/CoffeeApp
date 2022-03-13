@@ -1,7 +1,10 @@
 import 'package:coffee_app/constants/appTexts/login_texts.dart';
 import 'package:coffee_app/constants/appTexts/register_texts.dart';
 import 'package:coffee_app/constants/colors.dart';
+import 'package:coffee_app/services/auth/bloc/auth_bloc.dart';
+import 'package:coffee_app/services/auth/bloc/auth_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginView extends StatefulWidget {
   LoginView({Key? key}) : super(key: key);
@@ -30,6 +33,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -108,7 +112,11 @@ class _LoginViewState extends State<LoginView> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<AuthBloc>().add(AuthEventLogIn(
+                                _emailController.text,
+                                _passwordController.text));
+                          },
                           style: TextButton.styleFrom(
                             minimumSize: Size.zero,
                             padding: EdgeInsets.zero,
@@ -144,7 +152,11 @@ class _LoginViewState extends State<LoginView> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context
+                                .read<AuthBloc>()
+                                .add(const AuthEventShouldRegister());
+                          },
                           style: TextButton.styleFrom(
                             minimumSize: Size.zero,
                             padding: EdgeInsets.zero,

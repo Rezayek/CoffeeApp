@@ -1,6 +1,9 @@
 import 'package:coffee_app/constants/appTexts/register_texts.dart';
 import 'package:coffee_app/constants/colors.dart';
+import 'package:coffee_app/services/auth/bloc/auth_bloc.dart';
+import 'package:coffee_app/services/auth/bloc/auth_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterView extends StatefulWidget {
   RegisterView({Key? key}) : super(key: key);
@@ -44,20 +47,23 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Row(
           children: [
             IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.arrow_back_rounded,
-              color: coffeeCakeColor,
+              onPressed: () {
+                context.read<AuthBloc>().add(const AuthEventLogOut());
+              },
+              icon: const Icon(
+                Icons.arrow_back_rounded,
+                color: coffeeCakeColor,
+              ),
             ),
-          ),
             const Text(registerText),
           ],
         ),
-        backgroundColor:brownCoffeeColor ,
+        backgroundColor: brownCoffeeColor,
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -276,7 +282,20 @@ class _RegisterViewState extends State<RegisterView> {
                       height: 90,
                       child: Center(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()){
+                              context.read<AuthBloc>().add(
+                                  AuthEventRegister(
+                                    _userEmailController.text,
+                                    _userPasswordController.text,
+                                    _userFirstNameController.text,
+                                    _userSecondNameController.text,
+                                    _userAdresseController.text,
+                                    _userPhoneController.text,
+                                  ),
+                                );
+                            }
+                          },
                           style: TextButton.styleFrom(
                             minimumSize: Size.zero,
                             padding: EdgeInsets.zero,
