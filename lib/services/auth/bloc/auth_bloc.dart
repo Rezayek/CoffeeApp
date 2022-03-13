@@ -16,7 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
     on<AuthEventShouldRegister>(
       ((event, emit) {
-        emit(const AuthStateRegistering());
+        emit(const AuthStateRegistering(exception: null));
       }),
     );
 
@@ -31,7 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final address = event.address;
         final phone = event.phone;
         FirebaseUserCloudStorage _userDataStorage = FirebaseUserCloudStorage();
-        emit(const AuthStateNeedsVerification());
+
         try {
           final user =
               await provider.creatUser(email: email, password: password);
@@ -44,8 +44,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             userPhone: phone,
             userAddress: address,
           );
+          emit(const AuthStateNeedsVerification());
           await provider.sendEmailVerification();
-        } catch (e) {}
+        } on Exception catch (e) {
+          emit(AuthStateRegistering(exception: e));
+        }
       },
     );
 
@@ -55,7 +58,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await provider.initialize();
         final user = provider.currentUser;
         if (user == null) {
-          emit(const AuthStateLoggedOut());
+          emit(const AuthStateLoggedOut(exception: null));
         } else if (!user.isEmailVerified) {
           emit(const AuthStateNeedsVerification());
         } else {
@@ -76,7 +79,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             //emit(const AuthStateLoggedOut());
             emit(AuthStateLoggedIn(user: user));
           }
-        } catch (e) {}
+        } on Exception catch (e) {
+          emit(AuthStateLoggedOut(exception: e));
+        }
       }),
     );
 
@@ -84,8 +89,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       ((event, emit) async {
         try {
           await provider.logOut();
-          emit(const AuthStateLoggedOut());
-        } catch (e) {}
+          emit(const AuthStateLoggedOut(exception: null));
+        } on Exception catch (e) {
+          emit(AuthStateLoggedOut(exception: e));
+        }
       }),
     );
   }

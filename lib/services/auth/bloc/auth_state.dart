@@ -15,7 +15,8 @@ class AuthStateInitialized extends AuthState {
 }
 
 class AuthStateRegistering extends AuthState {
-  const AuthStateRegistering() : super();
+  final Exception? exception;
+  const AuthStateRegistering({required this.exception}) : super();
 }
 
 class AuthStateLoggedIn extends AuthState {
@@ -28,5 +29,6 @@ class AuthStateNeedsVerification extends AuthState {
 }
 
 class AuthStateLoggedOut extends AuthState {
-  const AuthStateLoggedOut() : super();
+  final Exception? exception;
+  const AuthStateLoggedOut({required this.exception}) : super();
 }
