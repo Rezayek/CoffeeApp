@@ -32,3 +32,12 @@ class AuthStateLoggedOut extends AuthState {
   final Exception? exception;
   const AuthStateLoggedOut({required this.exception}) : super();
 }
+
+class AuthStateForgotPassword extends AuthState {
+  final Exception? exception;
+  final bool hasSentEmail;
+  AuthStateForgotPassword({
+    required this.exception,
+    required this.hasSentEmail,
+  }) : super();
+}

@@ -7,6 +7,7 @@ import 'package:coffee_app/services/auth/bloc/auth_bloc.dart';
 import 'package:coffee_app/services/auth/bloc/auth_event.dart';
 import 'package:coffee_app/services/auth/bloc/auth_state.dart';
 import 'package:coffee_app/utilities/dialogs/error_dialog.dart';
+import 'package:coffee_app/utilities/dialogs/submit_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -285,7 +286,19 @@ class _RegisterViewState extends State<RegisterView> {
                               ),
                             ),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                final agreed =
+                                      await showSubmitDialog(context: context);
+                                  if (agreed) {
+                                    setState(() {
+                                      _isChecked = true;
+                                    });
+                                  } else{
+                                    setState(() {
+                                      _isChecked = false;
+                                    });
+                                  }
+                              },
                               child: const Text(
                                 userClickHere,
                                 style: TextStyle(

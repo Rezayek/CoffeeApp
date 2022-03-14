@@ -37,12 +37,12 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
-        if (state is AuthStateLoggedOut){
-          if(state.exception is UserNotFoundAuthException ){
+        if (state is AuthStateLoggedOut) {
+          if (state.exception is UserNotFoundAuthException) {
             await showErrorDialog(context, 'User not found');
-          }else if(state.exception is WrongPasswordAuthException){
+          } else if (state.exception is WrongPasswordAuthException) {
             await showErrorDialog(context, 'Wrong email or password');
-          }else if(state.exception is GenericAuthException){
+          } else if (state.exception is GenericAuthException) {
             await showErrorDialog(context, 'indentified Error try again');
           }
         }
@@ -222,7 +222,18 @@ class _LoginViewState extends State<LoginView> {
                             ),
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              if(_emailController.text != null){
+                                context
+                                  .read<AuthBloc>()
+                                  .add(AuthEventForgotPassword(email: _emailController.text,));
+                              }else{
+                                context
+                                  .read<AuthBloc>()
+                                  .add(AuthEventForgotPassword());
+                              }
+                              
+                            },
                             child: const Text(
                               clicKHereText,
                               style: TextStyle(
