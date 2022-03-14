@@ -5,8 +5,11 @@ import 'package:coffee_app/services/auth/bloc/auth_event.dart';
 import 'package:coffee_app/services/auth/cloud_user/auth_user_data.dart';
 import 'package:coffee_app/services/auth/cloud_user/firabase_user_cloud_storage.dart';
 import 'package:coffee_app/utilities/dialogs/logout_dialog.dart';
+import 'package:coffee_app/views/drawer_views/inner_views/manage_account.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:developer' as devtools show log;
 
 class DrawerMainView extends StatefulWidget {
   DrawerMainView({Key? key}) : super(key: key);
@@ -35,6 +38,7 @@ class _DrawerMainViewState extends State<DrawerMainView> {
               case ConnectionState.done:
                 if (snapshot.hasData) {
                   final userInfo = snapshot.data as Iterable<AuthUserData>;
+                  
                   return ListView(
                     children: [
                       UserAccountsDrawerHeader(
@@ -75,142 +79,164 @@ class _DrawerMainViewState extends State<DrawerMainView> {
                           ),
                         ),
                       ),
-                      ListTile(
-                        leading: const Icon(
-                          Icons.person,
-                          color: coffeeCakeColor,
-                          size: 23,
-                        ),
-                        title: const Text(
-                          'Manage your account',
-                          style: TextStyle(
+                      InkWell(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.person,
                             color: coffeeCakeColor,
-                            fontSize: 18,
+                            size: 23,
                           ),
-                        ),
-                        subtitle: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'Modify your account Data',
+                          title: const Text(
+                            'Manage your account',
                             style: TextStyle(
                               color: coffeeCakeColor,
-                              fontSize: 15,
+                              fontSize: 18,
                             ),
                           ),
-                        ),
-                        onTap: () {},
-                      ),
-                      ListTile(
-                        leading: const Icon(
-                          Icons.credit_card_rounded,
-                          color: coffeeCakeColor,
-                          size: 23,
-                        ),
-                        title: const Text(
-                          'Add credit card info',
-                          style: TextStyle(
-                            color: coffeeCakeColor,
-                            fontSize: 18,
+                          subtitle: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              'Modify your account Data',
+                              style: TextStyle(
+                                color: coffeeCakeColor,
+                                fontSize: 15,
+                              ),
+                            ),
                           ),
+                          onTap: () {
+                            
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ManageAccountView(userId: userInfo.elementAt(0).userId,userDataId: userInfo.elementAt(0).userDataId ),
+                              ),
+                            );
+                          },
                         ),
-                        subtitle: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'you will not see your credit card infos',
+                      ),
+                      InkWell(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.credit_card_rounded,
+                            color: coffeeCakeColor,
+                            size: 23,
+                          ),
+                          title: const Text(
+                            'Add credit card info',
                             style: TextStyle(
                               color: coffeeCakeColor,
-                              fontSize: 15,
+                              fontSize: 18,
                             ),
                           ),
-                        ),
-                        onTap: () {},
-                      ),
-                      ListTile(
-                        leading: const Icon(
-                          Icons.history,
-                          color: coffeeCakeColor,
-                          size: 23,
-                        ),
-                        title: const Text(
-                          'History',
-                          style: TextStyle(
-                            color: coffeeCakeColor,
-                            fontSize: 18,
+                          subtitle: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              'you will not see your credit card infos',
+                              style: TextStyle(
+                                color: coffeeCakeColor,
+                                fontSize: 15,
+                              ),
+                            ),
                           ),
+                          onTap: () {},
                         ),
-                        subtitle: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'Purchases history',
+                      ),
+                      InkWell(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.history,
+                            color: coffeeCakeColor,
+                            size: 23,
+                          ),
+                          title: const Text(
+                            'History',
                             style: TextStyle(
                               color: coffeeCakeColor,
-                              fontSize: 15,
+                              fontSize: 18,
                             ),
                           ),
-                        ),
-                        onTap: () {},
-                      ),
-                      ListTile(
-                        leading: const Icon(
-                          Icons.settings,
-                          color: coffeeCakeColor,
-                          size: 23,
-                        ),
-                        title: const Text(
-                          'Settings',
-                          style: TextStyle(
-                            color: coffeeCakeColor,
-                            fontSize: 18,
+                          subtitle: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              'Purchases history',
+                              style: TextStyle(
+                                color: coffeeCakeColor,
+                                fontSize: 15,
+                              ),
+                            ),
                           ),
+                          onTap: () {},
                         ),
-                        subtitle: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'App Settings',
+                      ),
+                      InkWell(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.settings,
+                            color: coffeeCakeColor,
+                            size: 23,
+                          ),
+                          title: const Text(
+                            'Settings',
                             style: TextStyle(
                               color: coffeeCakeColor,
-                              fontSize: 15,
+                              fontSize: 18,
                             ),
                           ),
-                        ),
-                        onTap: () {},
-                      ),
-                      ListTile(
-                        leading: const Icon(
-                          Icons.feedback_rounded,
-                          color: coffeeCakeColor,
-                          size: 23,
-                        ),
-                        title: const Text(
-                          'Contact us',
-                          style: TextStyle(
-                            color: coffeeCakeColor,
-                            fontSize: 18,
+                          subtitle: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              'App Settings',
+                              style: TextStyle(
+                                color: coffeeCakeColor,
+                                fontSize: 15,
+                              ),
+                            ),
                           ),
+                          onTap: () {},
                         ),
-                        onTap: () {},
                       ),
-                      ListTile(
-                        leading: const Icon(
-                          Icons.logout_rounded,
-                          color: coffeeCakeColor,
-                          size: 23,
-                        ),
-                        title: const Text(
-                          'Logout',
-                          style: TextStyle(
+                      InkWell(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.feedback_rounded,
                             color: coffeeCakeColor,
-                            fontSize: 18,
+                            size: 23,
                           ),
+                          title: const Text(
+                            'Contact us',
+                            style: TextStyle(
+                              color: coffeeCakeColor,
+                              fontSize: 18,
+                            ),
+                          ),
+                          onTap: () {},
                         ),
-                        onTap: () async {
-                          final shouldLogOut = await showLogOutDialog(context);
-                          if (shouldLogOut) {
-                            context
-                                .read<AuthBloc>()
-                                .add(const AuthEventLogOut());
-                          }
-                        },
+                      ),
+                      InkWell(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.logout_rounded,
+                            color: coffeeCakeColor,
+                            size: 23,
+                          ),
+                          title: const Text(
+                            'Logout',
+                            style: TextStyle(
+                              color: coffeeCakeColor,
+                              fontSize: 18,
+                            ),
+                          ),
+                          onTap: () async {
+                            final shouldLogOut =
+                                await showLogOutDialog(context);
+                            if (shouldLogOut) {
+                              context
+                                  .read<AuthBloc>()
+                                  .add(const AuthEventLogOut());
+                            }
+                          },
+                        ),
                       ),
                     ],
                   );
@@ -228,6 +254,16 @@ class _DrawerMainViewState extends State<DrawerMainView> {
               case ConnectionState.waiting:
                 return const Center(
                   child: CircularProgressIndicator(),
+                );
+
+              case ConnectionState.none:
+                return Center(
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.replay_outlined),
+                  ),
                 );
 
               default:

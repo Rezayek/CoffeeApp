@@ -48,4 +48,24 @@ class FirebaseUserCloudStorage {
       throw CouldNotFoundUserDataException();
     }
   }
+
+  Future<void> updateUserData({
+    required String userDataId,
+    required String userFirstName,
+    required String userSecondName,
+    required String userAddress,
+    required String userPhone,
+  }) async {
+    try {
+      await users.doc(userDataId).update({
+        firstName: userFirstName,
+        secondName: userSecondName,
+        address: userAddress,
+        phone: userPhone,
+      });
+      
+    } catch (e) {
+      throw CouldNotUpdateUserDataEception();
+    }
+  }
 }
