@@ -31,18 +31,18 @@ class AuthEventRegister extends AuthEvent {
   final String secondName;
   final String address;
   final String phone;
+  final String coupons;
 
   const AuthEventRegister(this.email, this.password, this.firstName,
-      this.secondName, this.address, this.phone);
+      this.secondName, this.address, this.phone, this.coupons);
 }
 
 class AuthEventShouldRegister extends AuthEvent {
   const AuthEventShouldRegister();
 }
 
-class AuthEventForgotPassword extends AuthEvent{
+class AuthEventForgotPassword extends AuthEvent {
   final String? email;
 
   AuthEventForgotPassword({this.email});
-
 }

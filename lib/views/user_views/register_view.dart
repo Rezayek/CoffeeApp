@@ -325,6 +325,7 @@ class _RegisterViewState extends State<RegisterView> {
                                           _userSecondNameController.text,
                                           _userAdresseController.text,
                                           _userPhoneController.text,
+                                          '0',
                                         ),
                                       );
                                 } else {

@@ -1,3 +1,4 @@
+import 'package:coffee_app/constants/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,8 +15,10 @@ Future<T?> showGenericDialog<T>({
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text(title),
-        content: Text(content),
+        
+        backgroundColor: coffeeCakeColor.withOpacity(0.8),
+        title: Text(title, style: const TextStyle(color: blackCoffeeColor, fontSize: 20, fontWeight: FontWeight.w600),),
+        content: Text(content, style: const TextStyle(color: blackCoffeeColor, fontSize: 18, fontWeight: FontWeight.w400),),
         actions: option.keys.map((optionTitle) {
           final T value = option[optionTitle];
           return TextButton(
@@ -26,7 +29,7 @@ Future<T?> showGenericDialog<T>({
                   Navigator.of(context).pop();
                 }
               },
-              child: Text(optionTitle));
+              child: Text(optionTitle, style: const TextStyle(color: blackCoffeeColor, fontSize: 18, fontWeight: FontWeight.w400),));
         }).toList(),
       );
     },

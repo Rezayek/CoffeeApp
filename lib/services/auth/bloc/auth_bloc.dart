@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:coffee_app/services/auth/auth_provider.dart';
 import 'package:coffee_app/services/auth/bloc/auth_event.dart';
 import 'package:coffee_app/services/auth/bloc/auth_state.dart';
+import 'package:coffee_app/services/auth/cloud_user/auth_user_data_constants.dart';
 import 'package:coffee_app/services/auth/cloud_user/firabase_user_cloud_storage.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -30,6 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final secondName = event.secondName;
         final address = event.address;
         final phone = event.phone;
+        final coupons = event.coupons;
         FirebaseUserCloudStorage _userDataStorage = FirebaseUserCloudStorage();
 
         try {
@@ -43,6 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             userEmail: email,
             userPhone: phone,
             userAddress: address,
+            userCoupons: coupons,
           );
           emit(const AuthStateNeedsVerification());
           await provider.sendEmailVerification();
@@ -97,28 +100,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
 
     on<AuthEventForgotPassword>(((event, emit) async {
-      
-
       final email = event.email;
 
       if (email == null) {
         return;
-      } 
-        bool didsendEmail;
-        Exception? exception;
-        try {
-          await provider.sendPasswordReset(toEmail: email);
-          didsendEmail = true;
-          exception = null;
-        } on Exception catch (e) {
-          didsendEmail = false;
-          exception = e;
-        }
-        emit(
-          AuthStateForgotPassword(
-              exception: exception, hasSentEmail: didsendEmail),
-        );
-      
+      }
+      bool didsendEmail;
+      Exception? exception;
+      try {
+        await provider.sendPasswordReset(toEmail: email);
+        didsendEmail = true;
+        exception = null;
+      } on Exception catch (e) {
+        didsendEmail = false;
+        exception = e;
+      }
+      emit(
+        AuthStateForgotPassword(
+            exception: exception, hasSentEmail: didsendEmail),
+      );
     }));
   }
 }

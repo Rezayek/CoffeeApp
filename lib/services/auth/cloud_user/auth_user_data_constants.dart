@@ -4,3 +4,4 @@ const secondName = 'second_name';
 const address = 'address';
 const email = 'email';
 const phone = 'phone_num';
+const coupons = 'coupons';

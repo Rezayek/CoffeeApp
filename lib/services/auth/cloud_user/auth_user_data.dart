@@ -11,6 +11,7 @@ class AuthUserData {
   final String userEmail;
   final String userAddress;
   final String userPhone;
+  final String userCoupons;
 
   const AuthUserData({
     required this.userDataId,
@@ -20,14 +21,19 @@ class AuthUserData {
     required this.userEmail,
     required this.userAddress,
     required this.userPhone,
+    required this.userCoupons,
   });
 
-  AuthUserData.fromSnapshot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
+  AuthUserData.fromSnapshot(
+      QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
       : userDataId = snapshot.id,
         userId = snapshot.data()[userOwnId],
         userFirstName = snapshot.data()[firstName],
         userSecondName = snapshot.data()[secondName],
         userEmail = snapshot.data()[email],
         userAddress = snapshot.data()[address],
-        userPhone = snapshot.data()[phone];
+        userPhone = snapshot.data()[phone],
+        userCoupons = snapshot.data()[coupons];
+
+
 }

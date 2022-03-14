@@ -20,6 +20,7 @@ class FirebaseUserCloudStorage {
     required String userEmail,
     required String userPhone,
     required String userAddress,
+    required String userCoupons,
   }) async {
     final document = await users.add({
       userOwnId: userId,
@@ -28,6 +29,7 @@ class FirebaseUserCloudStorage {
       address: userAddress,
       email: userEmail,
       phone: userPhone,
+      coupons: userCoupons,
     });
   }
 

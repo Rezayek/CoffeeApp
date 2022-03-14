@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     WidgetsFlutterBinding.ensureInitialized();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'My Coffee',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
