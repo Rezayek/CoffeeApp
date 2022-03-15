@@ -20,7 +20,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  FirebaseStorageGetPictures offers =
+  FirebaseStorageGetPictures storagePictures =
       FirebaseStorageGetPictures(folderName: offersFolderName);
   FirebaseDatabase itemsData = FirebaseDatabase();
 
@@ -68,7 +68,7 @@ class _HomeViewState extends State<HomeView> {
                       height: 230,
                       width: double.maxFinite,
                       child: FutureBuilder(
-                          future: offers.listFiles(),
+                          future: storagePictures.listFiles(),
                           builder:
                               (context, AsyncSnapshot<ListResult> snapshot) {
                             switch (snapshot.connectionState) {
@@ -110,7 +110,7 @@ class _HomeViewState extends State<HomeView> {
                                               ),
                                               child: Center(
                                                 child: FutureBuilder(
-                                                    future: offers.downloarUrl(
+                                                    future: storagePictures.downloarUrl(
                                                         offersFileNames
                                                             .items[index].name),
                                                     builder:
@@ -254,7 +254,7 @@ class _HomeViewState extends State<HomeView> {
                                     itemCount: bestSellingItems.length,
                                     itemBuilder: (context, index) {
                                       return FutureBuilder(
-                                          future: offers.downloarUrlOfItem(
+                                          future: storagePictures.downloarUrlOfItem(
                                               imageName: bestSellingItems
                                                   .elementAt(index)
                                                   .photoName,
