@@ -9,6 +9,7 @@ import 'package:coffee_app/handle_firestorage_pictures/firebase_storage_get_pict
 import 'package:coffee_app/services/firebase_database/categorie_item_model.dart';
 import 'package:coffee_app/services/firebase_database/firebase_database.dart';
 import 'package:coffee_app/views/app_main_views/navigation_Ui/navigation_view.dart';
+import 'package:coffee_app/views/widgets/categorie_row.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +25,8 @@ class _HomeViewState extends State<HomeView> {
       FirebaseStorageGetPictures(folderName: offersFolderName);
   FirebaseDatabase itemsData = FirebaseDatabase();
 
+  List<List<String>> categories = [['assets/beens_categorie.jpg','assets/machines_categorie.jpg'], ['assets/products_categorie.jpg','assets/cups_design_categorie.jpg'], ['assets/recepies_categorie.jpg',]];
+  List<List<String>> categoriesNames = [['Coffee Beens','Coffee Machines'], ['Coffee Products','Coffee Cups'], ['Coffee Recepies',]];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +51,7 @@ class _HomeViewState extends State<HomeView> {
           Positioned(
             child: SingleChildScrollView(
               child: SizedBox(
-                height: 1400,
+                height: 1250,
                 width: double.maxFinite,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,9 +113,11 @@ class _HomeViewState extends State<HomeView> {
                                               ),
                                               child: Center(
                                                 child: FutureBuilder(
-                                                    future: storagePictures.downloarUrl(
-                                                        offersFileNames
-                                                            .items[index].name),
+                                                    future: storagePictures
+                                                        .downloarUrl(
+                                                            offersFileNames
+                                                                .items[index]
+                                                                .name),
                                                     builder:
                                                         (context, snapshot) {
                                                       switch (snapshot
@@ -254,13 +259,15 @@ class _HomeViewState extends State<HomeView> {
                                     itemCount: bestSellingItems.length,
                                     itemBuilder: (context, index) {
                                       return FutureBuilder(
-                                          future: storagePictures.downloarUrlOfItem(
-                                              imageName: bestSellingItems
-                                                  .elementAt(index)
-                                                  .photoName,
-                                              folderPhotoName: bestSellingItems
-                                                  .elementAt(index)
-                                                  .photoFolder),
+                                          future: storagePictures
+                                              .downloarUrlOfItem(
+                                                  imageName: bestSellingItems
+                                                      .elementAt(index)
+                                                      .photoName,
+                                                  folderPhotoName:
+                                                      bestSellingItems
+                                                          .elementAt(index)
+                                                          .photoFolder),
                                           builder: (context, snapshot) {
                                             switch (snapshot.connectionState) {
                                               case ConnectionState.waiting:
@@ -277,66 +284,154 @@ class _HomeViewState extends State<HomeView> {
                                                   final imgUrl =
                                                       snapshot.data as String;
                                                   return GestureDetector(
-                                                    onTap: (){},
+                                                    onTap: () {},
                                                     child: Padding(
                                                         padding:
-                                                            const EdgeInsets.all(
-                                                                12.0),
+                                                            const EdgeInsets
+                                                                .all(12.0),
                                                         child: Container(
                                                           height: 180,
                                                           width: 310,
-                                                          decoration: BoxDecoration(
+                                                          decoration:
+                                                              BoxDecoration(
                                                             color:
-                                                                      blackCoffeeColor
-                                                                          .withOpacity(
-                                                                              0.4),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(36),
+                                                                blackCoffeeColor
+                                                                    .withOpacity(
+                                                                        0.4),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        36),
                                                           ),
                                                           child: Row(
                                                             children: [
                                                               Container(
-                                                                margin: const EdgeInsets.only(left: 10),
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10),
                                                                 height: 160,
                                                                 width: 150,
                                                                 decoration:
                                                                     BoxDecoration(
                                                                   borderRadius:
                                                                       BorderRadius
-                                                                          .circular(36),
-                                                                  image:
-                                                                      DecorationImage(
-                                                                    image: NetworkImage(
-                                                                        imgUrl),
-                                                                    fit: BoxFit.fill    
-                                                                  ),
+                                                                          .circular(
+                                                                              36),
+                                                                  image: DecorationImage(
+                                                                      image: NetworkImage(
+                                                                          imgUrl),
+                                                                      fit: BoxFit
+                                                                          .fill),
                                                                 ),
                                                               ),
-                                                  
                                                               Container(
                                                                 height: 210,
                                                                 width: 140,
-                                                                margin: const EdgeInsets.only(left: 8),
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            8),
                                                                 child: Column(
-                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
                                                                   children: [
-                                                                    SizedBox(height: 10,),
-                                                                    Text(bestSellingItems.elementAt(index).itemName, style: TextStyle(color: coffeeCakeColor, fontSize: 25, fontWeight: FontWeight.w500),),
-                                                                    SizedBox(height: 20,),
-                                                                    Text('Categorie: '+bestSellingItems.elementAt(index).itemCategorie, style: TextStyle(color: coffeeCakeColor, fontSize: 18, fontWeight: FontWeight.w400),),
-                                                                    SizedBox(height: 10,),
-                                                                    Text('Prize: '+bestSellingItems.elementAt(index).itemPrize, style: TextStyle(color: coffeeCakeColor, fontSize: 18, fontWeight: FontWeight.w400),),
-                                                                    SizedBox(height: 10,),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          10,
+                                                                    ),
+                                                                    Text(
+                                                                      bestSellingItems
+                                                                          .elementAt(
+                                                                              index)
+                                                                          .itemName,
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              coffeeCakeColor,
+                                                                          fontSize:
+                                                                              25,
+                                                                          fontWeight:
+                                                                              FontWeight.w500),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          20,
+                                                                    ),
+                                                                    Text(
+                                                                      'Categorie: ' +
+                                                                          bestSellingItems
+                                                                              .elementAt(index)
+                                                                              .itemCategorie,
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              coffeeCakeColor,
+                                                                          fontSize:
+                                                                              18,
+                                                                          fontWeight:
+                                                                              FontWeight.w400),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          10,
+                                                                    ),
+                                                                    Text(
+                                                                      'Prize: ' +
+                                                                          bestSellingItems
+                                                                              .elementAt(index)
+                                                                              .itemPrize,
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              coffeeCakeColor,
+                                                                          fontSize:
+                                                                              18,
+                                                                          fontWeight:
+                                                                              FontWeight.w400),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          10,
+                                                                    ),
                                                                     Container(
-                                                                      width: 115,
-                                                                      child: Row(
+                                                                      width:
+                                                                          115,
+                                                                      child:
+                                                                          Row(
                                                                         children: [
-                                                                          Text('Rating:',style: TextStyle(color: coffeeCakeColor, fontSize: 18, fontWeight: FontWeight.w400), ),
-                                                                          SizedBox(width: 5,),
-                                                                          Icon(Icons.star, size: 18, color: Color.fromARGB(255, 255, 208, 0),),
-                                                                          SizedBox(width: 5,),
-                                                                          Text(bestSellingItems.elementAt(index).itemRating, style: TextStyle(color: coffeeCakeColor, fontSize: 18, fontWeight: FontWeight.w400),)
+                                                                          Text(
+                                                                            'Rating:',
+                                                                            style: TextStyle(
+                                                                                color: coffeeCakeColor,
+                                                                                fontSize: 18,
+                                                                                fontWeight: FontWeight.w400),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            width:
+                                                                                5,
+                                                                          ),
+                                                                          Icon(
+                                                                            Icons.star,
+                                                                            size:
+                                                                                18,
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                255,
+                                                                                208,
+                                                                                0),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            width:
+                                                                                5,
+                                                                          ),
+                                                                          Text(
+                                                                            bestSellingItems.elementAt(index).itemRating,
+                                                                            style: TextStyle(
+                                                                                color: coffeeCakeColor,
+                                                                                fontSize: 18,
+                                                                                fontWeight: FontWeight.w400),
+                                                                          )
                                                                         ],
                                                                       ),
                                                                     )
@@ -406,10 +501,43 @@ class _HomeViewState extends State<HomeView> {
                         }
                       },
                     ),
-
                     Container(
-
-                    )
+                      margin: EdgeInsets.only(
+                          left: MediaQuery.of(context).size.width * 0.1,
+                          top: 25),
+                      height: 650,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      decoration: BoxDecoration(
+                        color: oldCoffeeColor.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(26),
+                      ),
+                      child: Column(
+                              children: [
+                                const Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Text(
+                              'Categories',
+                              style: TextStyle(
+                                color: blackCoffeeColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 25,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 550,
+                            child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                                itemCount: categories.length,
+                                itemBuilder: (context, index) {
+                                  return CategorieRow(
+                                      categories: categories[index],
+                                      categorieNames: categoriesNames[index]);
+                                }),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
