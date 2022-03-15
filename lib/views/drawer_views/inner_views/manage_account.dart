@@ -1,4 +1,3 @@
-
 import 'package:coffee_app/constants/colors.dart';
 import 'package:coffee_app/services/auth/cloud_user/auth_user_data.dart';
 import 'package:coffee_app/services/auth/cloud_user/cloud_user_exceptions.dart';
@@ -8,19 +7,18 @@ import 'package:coffee_app/utilities/dialogs/manage_account_dialog.dart';
 
 import 'package:flutter/material.dart';
 
-
-
 class ManageAccountView extends StatefulWidget {
   final String userId;
   final String userDataId;
 
   // ignore: prefer_const_constructors_in_immutables
-  ManageAccountView({Key? key, required this.userId, required this.userDataId}) : super(key: key);
+  ManageAccountView({Key? key, required this.userId, required this.userDataId})
+      : super(key: key);
 
   @override
   State<ManageAccountView> createState() =>
       // ignore: no_logic_in_create_state
-      _ManageAccountViewState(userId: userId, userDataId:  userDataId);
+      _ManageAccountViewState(userId: userId, userDataId: userDataId);
 }
 
 class _ManageAccountViewState extends State<ManageAccountView> {
@@ -68,10 +66,10 @@ class _ManageAccountViewState extends State<ManageAccountView> {
 
   @override
   void dispose() {
-    _userAddress.dispose();
-    _userFirstName.dispose();
-    _userAddress.dispose();
-    _userPhone.dispose();
+    //_userAddress.dispose();
+    //_userFirstName.dispose();
+    //_userAddress.dispose();
+    //_userPhone.dispose();
     super.dispose();
   }
 
@@ -211,13 +209,8 @@ class _ManageAccountViewState extends State<ManageAccountView> {
                                 userPhone: _userPhone.text,
                               );
 
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ManageAccountView(
-                                      userId: userId, userDataId: userDataId,),
-                                ),
-                              );
+
+                              
                             } on CouldNotUpdateUserDataEception catch (_) {
                               showErrorDialog(context,
                                   'could not update the data try again');

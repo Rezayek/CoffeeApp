@@ -1,0 +1,1 @@
+const String  offersFolderName = 'latest_offers_pictures';

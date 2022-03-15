@@ -1,0 +1,4 @@
+
+class CategorieItemNotFound implements Exception{
+  
+}
