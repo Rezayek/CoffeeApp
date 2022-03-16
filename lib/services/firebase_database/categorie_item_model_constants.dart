@@ -5,6 +5,7 @@ const String itemCategorieFire = 'categorie';
 const String bestSellingFire = 'best_selling';
 const String itemPrizeFire = 'prize';
 const String itemRatingFire = 'rating';
+const String itemCountrieFire = 'countrie';
 
 
 //testimg.jpg

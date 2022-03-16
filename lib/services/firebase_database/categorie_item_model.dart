@@ -12,6 +12,7 @@ class CategorieItemModel {
   final bool bestSelling;
   final String itemPrize;
   final String itemRating;
+  final String itemCountrie;
 
   const CategorieItemModel({
     required this.itemId,
@@ -22,6 +23,7 @@ class CategorieItemModel {
     required this.bestSelling,
     required this.itemPrize,
     required this.itemRating,
+    required this.itemCountrie,
   });
 
   CategorieItemModel.fromSnapShot(
@@ -33,5 +35,6 @@ class CategorieItemModel {
         itemCategorie = snapshot.data()[itemCategorieFire],
         bestSelling = snapshot.data()[bestSellingFire],
         itemPrize = snapshot.data()[itemPrizeFire],
-        itemRating = snapshot.data()[itemRatingFire];
+        itemRating = snapshot.data()[itemRatingFire],
+        itemCountrie= snapshot.data()[itemCountrieFire];
 }

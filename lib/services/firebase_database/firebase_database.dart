@@ -35,11 +35,15 @@ class FirebaseDatabase {
   Future<Iterable<CategorieItemModel>> getCategorieItemsData(
       {required String categorie}) async {
     try {
-      return await categories
-          .where(itemCategorieFire, isEqualTo: categorie)
-          .get()
-          .then((value) =>
-              value.docs.map((doc) => CategorieItemModel.fromSnapShot(doc)));
+      // return categories.snapshots().map((event) => event.docs
+      //     .map((doc) => CategorieItemModel.fromSnapShot(doc))
+      //     .where((item) => item.itemCategorie == categorie));
+      //this is future    
+       return await  categories
+           .where(itemCategorieFire, isEqualTo: categorie)
+           .get()
+           .then((value) =>
+               value.docs.map((doc) => CategorieItemModel.fromSnapShot(doc)));
     } catch (e) {
       throw CategorieItemNotFound();
     }
@@ -54,10 +58,10 @@ class FirebaseDatabase {
     );
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getItemData({required String itemId}) async {
+  Future<DocumentSnapshot<Map<String, dynamic>>> getItemData(
+      {required String itemId}) async {
     try {
       return await categories.doc(itemId).get();
-      
     } catch (e) {
       throw CategorieItemNotFound();
     }

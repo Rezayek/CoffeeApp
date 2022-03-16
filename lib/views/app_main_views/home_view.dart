@@ -25,8 +25,21 @@ class _HomeViewState extends State<HomeView> {
       FirebaseStorageGetPictures(folderName: offersFolderName);
   FirebaseDatabase itemsData = FirebaseDatabase();
 
-  List<List<String>> categories = [['assets/beens_categorie.jpg','assets/machines_categorie.jpg'], ['assets/products_categorie.jpg','assets/cups_design_categorie.jpg'], ['assets/recepies_categorie.jpg',]];
-  List<List<String>> categoriesNames = [['Coffee Beens','Coffee Machines'], ['Coffee Products','Coffee Cups'], ['Coffee Recepies',]];
+  List<List<String>> categories = [
+    ['assets/beens_categorie.jpg', 'assets/machines_categorie.jpg'],
+    ['assets/products_categorie.jpg', 'assets/cups_design_categorie.jpg'],
+    [
+      'assets/recepies_categorie.jpg',
+    ]
+  ];
+  List<List<String>> categoriesNames = [
+    ['Coffee Beens', 'Coffee Machines'],
+    ['Coffee Products', 'Coffee Cups'],
+    [
+      'Coffee Recepies',
+    ]
+  ];
+  List<List<String>> navigationHelper = [['beens','machine'], ['product', 'cup'], ['',]];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -512,8 +525,8 @@ class _HomeViewState extends State<HomeView> {
                         borderRadius: BorderRadius.circular(26),
                       ),
                       child: Column(
-                              children: [
-                                const Padding(
+                        children: [
+                          const Padding(
                             padding: EdgeInsets.all(16.0),
                             child: Text(
                               'Categories',
@@ -527,12 +540,12 @@ class _HomeViewState extends State<HomeView> {
                           Container(
                             height: 550,
                             child: ListView.builder(
-                              scrollDirection: Axis.vertical,
+                                scrollDirection: Axis.vertical,
                                 itemCount: categories.length,
                                 itemBuilder: (context, index) {
                                   return CategorieRow(
                                       categories: categories[index],
-                                      categorieNames: categoriesNames[index]);
+                                      categorieNames: categoriesNames[index], categorieNavHepler: navigationHelper[index],);
                                 }),
                           ),
                         ],
