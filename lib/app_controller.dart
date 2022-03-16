@@ -23,7 +23,7 @@ class AppController extends StatelessWidget {
         } else if (state is AuthStateRegistering) {
           return RegisterView();
         } else if (state is AuthStateLoggedIn) {
-          return  MainNavigationView();
+          return  MainNavigationView(currentIndex: 0,);
         } else if (state is AuthStateNeedsVerification) {
           return VerificationView();
         } else if (state is AuthStateForgotPassword) {

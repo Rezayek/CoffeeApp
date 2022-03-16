@@ -1,3 +1,5 @@
+// ignore_for_file: no_logic_in_create_state, must_be_immutable
+
 import 'package:coffee_app/constants/colors.dart';
 import 'package:coffee_app/views/app_main_views/cart_view.dart';
 import 'package:coffee_app/views/app_main_views/home_view.dart';
@@ -6,11 +8,13 @@ import 'package:coffee_app/views/drawer_views/drawer_main_view.dart';
 import 'package:flutter/material.dart';
 
 
+
 class MainNavigationView extends StatefulWidget {
-  MainNavigationView({Key? key}) : super(key: key);
+  int currentIndex = 0;
+  MainNavigationView({Key? key, required this.currentIndex}) : super(key: key);
 
   @override
-  State<MainNavigationView> createState() => _MainNavigationViewState();
+  State<MainNavigationView> createState() => _MainNavigationViewState(currentIndex: currentIndex);
 }
 
 class _MainNavigationViewState extends State<MainNavigationView> {
@@ -19,7 +23,9 @@ class _MainNavigationViewState extends State<MainNavigationView> {
     CartView(),
     SearchView(),
   ];
-  int currentIndex = 0;
+   int currentIndex = 0;
+
+  _MainNavigationViewState({this.currentIndex= 0});
   void onTap(int index) {
     setState(() {
       currentIndex = index;
@@ -79,9 +85,17 @@ class _MainNavigationViewState extends State<MainNavigationView> {
                 size: 35,
               )),
           BottomNavigationBarItem(
-              label: "cart_view", icon: Icon(Icons.shopping_bag, size: 35,)),
+              label: "cart_view",
+              icon: Icon(
+                Icons.shopping_bag,
+                size: 35,
+              )),
           BottomNavigationBarItem(
-              label: "search_view", icon: Icon(Icons.search, size: 35,))
+              label: "search_view",
+              icon: Icon(
+                Icons.search,
+                size: 35,
+              ))
         ],
       ),
       drawer: DrawerMainView(),

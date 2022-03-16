@@ -39,7 +39,13 @@ class _HomeViewState extends State<HomeView> {
       'Coffee Recepies',
     ]
   ];
-  List<List<String>> navigationHelper = [['beens','machine'], ['product', 'cup'], ['',]];
+  List<List<String>> navigationHelper = [
+    ['beens', 'machine'],
+    ['product', 'cup'],
+    [
+      '',
+    ]
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,7 +158,6 @@ class _HomeViewState extends State<HomeView> {
                                                             final offerImgUrl =
                                                                 snapshot.data
                                                                     as String;
-                                                            log(offerImgUrl);
                                                             return InkWell(
                                                               onTap: () {},
                                                               child: Container(
@@ -187,7 +192,9 @@ class _HomeViewState extends State<HomeView> {
                                                                       context,
                                                                       MaterialPageRoute(
                                                                           builder: (BuildContext context) =>
-                                                                              MainNavigationView()),
+                                                                              MainNavigationView(
+                                                                                currentIndex: 0,
+                                                                              )),
                                                                     );
                                                                   },
                                                                   icon: Icon(Icons
@@ -221,7 +228,9 @@ class _HomeViewState extends State<HomeView> {
                                             MaterialPageRoute(
                                                 builder:
                                                     (BuildContext context) =>
-                                                        MainNavigationView()),
+                                                        MainNavigationView(
+                                                          currentIndex: 0,
+                                                        )),
                                           );
                                         },
                                         icon: Icon(Icons.replay_outlined)),
@@ -296,6 +305,7 @@ class _HomeViewState extends State<HomeView> {
                                                 if (snapshot.hasData) {
                                                   final imgUrl =
                                                       snapshot.data as String;
+                                                  log(imgUrl == null? 'null':'not');
                                                   return GestureDetector(
                                                     onTap: () {},
                                                     child: Padding(
@@ -465,7 +475,9 @@ class _HomeViewState extends State<HomeView> {
                                                             MaterialPageRoute(
                                                               builder: (BuildContext
                                                                       context) =>
-                                                                  MainNavigationView(),
+                                                                  MainNavigationView(
+                                                                      currentIndex:
+                                                                          0),
                                                             ),
                                                           );
                                                         },
@@ -495,7 +507,8 @@ class _HomeViewState extends State<HomeView> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (BuildContext context) =>
-                                              MainNavigationView(),
+                                              MainNavigationView(
+                                                  currentIndex: 0),
                                         ),
                                       );
                                     },
@@ -544,8 +557,10 @@ class _HomeViewState extends State<HomeView> {
                                 itemCount: categories.length,
                                 itemBuilder: (context, index) {
                                   return CategorieRow(
-                                      categories: categories[index],
-                                      categorieNames: categoriesNames[index], categorieNavHepler: navigationHelper[index],);
+                                    categories: categories[index],
+                                    categorieNames: categoriesNames[index],
+                                    categorieNavHepler: navigationHelper[index],
+                                  );
                                 }),
                           ),
                         ],

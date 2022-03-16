@@ -99,6 +99,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  curved_navigation_bar:
+    dependency: "direct main"
+    description:
+      name: curved_navigation_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -195,6 +202,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  flutter_speed_dial:
+    dependency: "direct main"
+    description:
+      name: flutter_speed_dial
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.0.0+1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -380,4 +394,4 @@ packages:
     version: "3.1.0"
 sdks:
   dart: ">=2.17.0-87.0.dev <3.0.0"
-  flutter: ">=1.20.0"
+  flutter: ">=2.5.0"
