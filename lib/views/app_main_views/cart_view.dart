@@ -1,3 +1,4 @@
+import 'package:coffee_app/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class CartView extends StatefulWidget {
@@ -10,6 +11,25 @@ class CartView extends StatefulWidget {
 class _CartViewState extends State<CartView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Stack(alignment: Alignment.center,
+      children: [
+        Positioned(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    coffeeCakeColor.withOpacity(0.9),
+                    blackCoffeeColor.withOpacity(0.9),
+                    coffeeCakeColor.withOpacity(0.9),
+                  ],
+                  begin: const Alignment(-0.4, 15),
+                  end: const Alignment(3, -2),
+                ),
+              ),
+            ),
+          ),
+      ],),
+    );
   }
 }

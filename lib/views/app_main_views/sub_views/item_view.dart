@@ -12,6 +12,7 @@ import 'package:coffee_app/services/firebase_database_reviews/review_exceptions.
 import 'package:coffee_app/services/firebase_database_reviews/review_model.dart';
 import 'package:coffee_app/services/firebase_database_reviews/reviews_database.dart';
 import 'package:coffee_app/utilities/dialogs/error_dialog.dart';
+import 'package:coffee_app/utilities/dialogs/manage_review.dart';
 import 'package:coffee_app/views/widgets/addBtn.dart';
 import 'package:coffee_app/views/widgets/floating_btn.dart';
 import 'package:flutter/material.dart';
@@ -395,7 +396,7 @@ class _ItemViewState extends State<ItemView> {
                           ),
                           ElevatedButton(
                             onPressed: () async {
-                              if (_reviewController.text.length > 20) {
+                              if (_reviewController.text.length >= 20) {
                                 if (currentRate != 'Rate') {
                                   final user = await _user.getUserData(
                                       userAcountId: _userId);
@@ -413,16 +414,18 @@ class _ItemViewState extends State<ItemView> {
                                             ' ' +
                                             user.elementAt(0).userSecondName);
                                     _reviewController.text = '';
-                                  } on FailedToAddReview catch (e) {
-                                    showErrorDialog(
-                                        context, 'failed to save review');
+                                  } on FailedToAddReview catch (_) {
+                                    await showErrorDialog(context, 'failed to save review');
                                   }
                                 } else {
-                                  showErrorDialog(context, 'Select a rating');
+                                  await showManageReview(
+                                      context: context,
+                                      text: 'Select a rating');
                                 }
                               } else {
-                                showErrorDialog(
-                                    context, 'At least 20 caracter');
+                                await showManageReview(
+                                    context: context,
+                                    text: 'At least 20 caracter');
                               }
                             },
                             child: const Text("Post"),
@@ -433,162 +436,186 @@ class _ItemViewState extends State<ItemView> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Container(
                 padding: const EdgeInsets.only(left: 20, right: 20),
                 child: FutureBuilder(
                   future: _reviews.getReviews(itemId: itemId),
-                  builder: (context,  snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                    return Center(
-                      child: IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: ((context) =>
-                                            ItemView(itemId: itemId))))
-                                .then((value) => setState(() {}));
-                          },
-                          icon: const Icon(
-                            Icons.replay,
-                            size: 25,
-                          )),
-                    );
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return Center(
+                          child: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: ((context) =>
+                                                ItemView(itemId: itemId))))
+                                    .then((value) => setState(() {}));
+                              },
+                              icon: const Icon(
+                                Icons.replay,
+                                size: 25,
+                              )),
+                        );
 
-                  case ConnectionState.waiting:
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                      case ConnectionState.waiting:
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
 
-                  case ConnectionState.done:
-                    if (snapshot.hasData) {
-                      final dataReviews =
-                          snapshot.data as Iterable<ReviewModel>;
-                      return SizedBox(
-                        height: 450,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Reviews',style: TextStyle(
-                                                    color: blackCoffeeColor,
-                                                    fontSize: 22,
-                                                    fontWeight:
-                                                        FontWeight.w600 )),
-                            const SizedBox(height: 15,),                            
-                            Scrollbar(
-                              child: SizedBox(
-                                height: 400,
-                                child: ListView.builder(
-                                    itemCount: dataReviews.length,
-                                    itemBuilder: (context, index) {
-                                      return Container(
-                                        height: 200,
-                                        width: 350,
-                                        margin: const EdgeInsets.all(10),
-                                        child: Column(
-                                          children: [
-                                            SizedBox(
-                                              width: 320,
-                                              height: 35,
-                                              child: Row(
-                                                children: [
-                                                  const CircleAvatar(backgroundImage: AssetImage('assets/coffeeAvatar.jpg')),
-                                                  Text(
+                      case ConnectionState.done:
+                        if (snapshot.hasData) {
+                          final dataReviews =
+                              snapshot.data as Iterable<ReviewModel>;
+                          return SizedBox(
+                            height: 450,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Reviews',
+                                    style: TextStyle(
+                                        color: blackCoffeeColor,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w600)),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Scrollbar(
+                                  child: SizedBox(
+                                    height: 400,
+                                    child: ListView.builder(
+                                        itemCount: dataReviews.length,
+                                        itemBuilder: (context, index) {
+                                          return Container(
+                                            height: 200,
+                                            width: 350,
+                                            margin: const EdgeInsets.all(10),
+                                            child: Column(
+                                              children: [
+                                                SizedBox(
+                                                  width: 320,
+                                                  height: 35,
+                                                  child: Row(
+                                                    children: [
+                                                      const CircleAvatar(
+                                                          backgroundImage:
+                                                              AssetImage(
+                                                                  'assets/coffeeAvatar.jpg')),
+                                                      Text(
+                                                        dataReviews
+                                                            .elementAt(index)
+                                                            .reviewUserName,
+                                                        style: const TextStyle(
+                                                            color:
+                                                                coffeeCakeColor,
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Text(
+                                                        dataReviews
+                                                            .elementAt(index)
+                                                            .reviewUserRate,
+                                                        style: const TextStyle(
+                                                            color:
+                                                                coffeeCakeColor,
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                      // const SizedBox(
+                                                      //   width: 5,
+                                                      // ),
+                                                      // Text(
+                                                      //   dataReviews
+                                                      //       .elementAt(index)
+                                                      //       .reviewDate,
+                                                      //   style: const TextStyle(
+                                                      //       color: coffeeCakeColor,
+                                                      //       fontSize: 10,
+                                                      //       fontWeight:
+                                                      //           FontWeight.w500),
+                                                      // ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Container(
+                                                  height: 150,
+                                                  width: 340,
+                                                  padding:
+                                                      const EdgeInsets.all(15),
+                                                  decoration: BoxDecoration(
+                                                      color: irishCoffeeColor
+                                                          .withOpacity(0.7),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              26)),
+                                                  child: Text(
                                                     dataReviews
                                                         .elementAt(index)
-                                                        .reviewUserName,
+                                                        .reviewContent,
                                                     style: const TextStyle(
                                                         color: coffeeCakeColor,
                                                         fontSize: 18,
                                                         fontWeight:
-                                                            FontWeight.w500),
+                                                            FontWeight.w400),
                                                   ),
-                                                  const SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Text(
-                                                    dataReviews
-                                                        .elementAt(index)
-                                                        .reviewUserRate,
-                                                    style: const TextStyle(
-                                                        color: coffeeCakeColor,
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                  // const SizedBox(
-                                                  //   width: 5,
-                                                  // ),
-                                                  // Text(
-                                                  //   dataReviews
-                                                  //       .elementAt(index)
-                                                  //       .reviewDate,
-                                                  //   style: const TextStyle(
-                                                  //       color: coffeeCakeColor,
-                                                  //       fontSize: 10,
-                                                  //       fontWeight:
-                                                  //           FontWeight.w500),
-                                                  // ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
-                                            const SizedBox(
-                                              height: 10,
-                                            ),
-                                            Container(
-                                              height: 150,
-                                              width: 340,
-                                              padding: const EdgeInsets.all(15),
-                                              decoration: BoxDecoration(
-                                                  color: irishCoffeeColor
-                                                      .withOpacity(0.7),
-                                                  borderRadius:
-                                                      BorderRadius.circular(26)),
-                                              child: Text(
-                                                dataReviews
-                                                    .elementAt(index)
-                                                    .reviewContent,
-                                                style: const TextStyle(
-                                                    color: coffeeCakeColor,
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.w400),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }),
-                              ),
+                                          );
+                                        }),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-                    } else {
-                      return Center(
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: ((context) =>
-                                              ItemView(itemId: itemId))))
-                                  .then((value) => setState(() {}));
-                            },
-                            icon: const Icon(
-                              Icons.replay,
-                              size: 25,
-                            )),
-                      );
+                          );
+                        } else {
+                          return Center(
+                            child: IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: ((context) =>
+                                                  ItemView(itemId: itemId))))
+                                      .then((value) => setState(() {}));
+                                },
+                                icon: const Icon(
+                                  Icons.replay,
+                                  size: 25,
+                                )),
+                          );
+                        }
+                      default:
+                        return Center(
+                          child: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: ((context) =>
+                                                ItemView(itemId: itemId))))
+                                    .then((value) => setState(() {}));
+                              },
+                              icon: const Icon(
+                                Icons.replay,
+                                size: 25,
+                              )),
+                        );
                     }
-                  default:
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                }
                   },
                 ),
               )

@@ -160,9 +160,24 @@ class _CategorieViewState extends State<CategorieView> {
                                                     );
                                                   }
                                                 default:
-                                                  return const Center(
-                                                    child:
-                                                        CircularProgressIndicator(),
+                                                  return Center(
+                                                    child: IconButton(
+                                                        onPressed: () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: ((context) =>
+                                                                      CategorieView(
+                                                                          categorieName:
+                                                                              categorieName)))).then(
+                                                              (value) =>
+                                                                  setState(
+                                                                      () {}));
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons.replay,
+                                                          size: 25,
+                                                        )),
                                                   );
                                               }
                                             }),
@@ -273,8 +288,22 @@ class _CategorieViewState extends State<CategorieView> {
                         }
 
                       default:
-                        return const Center(
-                          child: CircularProgressIndicator(),
+                        return Center(
+                          child: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: ((context) =>
+                                                CategorieView(
+                                                    categorieName:
+                                                        categorieName))))
+                                    .then((value) => setState(() {}));
+                              },
+                              icon: const Icon(
+                                Icons.replay,
+                                size: 25,
+                              )),
                         );
                     }
                   },
