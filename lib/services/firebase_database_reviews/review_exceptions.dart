@@ -1,0 +1,2 @@
+
+class FailedToAddReview implements Exception{}

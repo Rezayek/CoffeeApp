@@ -1,8 +1,8 @@
 import 'package:coffee_app/constants/colors.dart';
 import 'package:coffee_app/constants/storage_folders_name.dart';
 import 'package:coffee_app/handle_firestorage_pictures/firebase_storage_get_pictures.dart';
-import 'package:coffee_app/services/firebase_database/categorie_item_model.dart';
-import 'package:coffee_app/services/firebase_database/firebase_database.dart';
+import 'package:coffee_app/services/firebase_database_items/categorie_item_model.dart';
+import 'package:coffee_app/services/firebase_database_items/firebase_database.dart';
 import 'package:coffee_app/views/app_main_views/home_view.dart';
 import 'package:coffee_app/views/app_main_views/navigation_Ui/navigation_view.dart';
 import 'package:coffee_app/views/app_main_views/sub_views/item_view.dart';

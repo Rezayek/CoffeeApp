@@ -6,6 +6,8 @@ const String bestSellingFire = 'best_selling';
 const String itemPrizeFire = 'prize';
 const String itemRatingFire = 'rating';
 const String itemCountrieFire = 'countrie';
+const String itemStockFire = 'stock';
+const String itemDescriptionFire = 'description';
 
 
 //testimg.jpg

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coffee_app/services/firebase_database/categorie_item_model.dart';
-import 'package:coffee_app/services/firebase_database/categorie_item_model_constants.dart';
-import 'package:coffee_app/services/firebase_database/firebase_database_exception.dart';
+import 'package:coffee_app/services/firebase_database_items/categorie_item_model.dart';
+import 'package:coffee_app/services/firebase_database_items/categorie_item_model_constants.dart';
+import 'package:coffee_app/services/firebase_database_items/firebase_database_exception.dart';
 
 class FirebaseDatabase {
   final categories = FirebaseFirestore.instance.collection('items');
