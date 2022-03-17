@@ -9,6 +9,7 @@ import 'package:coffee_app/handle_firestorage_pictures/firebase_storage_get_pict
 import 'package:coffee_app/services/firebase_database/categorie_item_model.dart';
 import 'package:coffee_app/services/firebase_database/firebase_database.dart';
 import 'package:coffee_app/views/app_main_views/navigation_Ui/navigation_view.dart';
+import 'package:coffee_app/views/app_main_views/sub_views/item_view.dart';
 import 'package:coffee_app/views/widgets/categorie_row.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -305,9 +306,16 @@ class _HomeViewState extends State<HomeView> {
                                                 if (snapshot.hasData) {
                                                   final imgUrl =
                                                       snapshot.data as String;
-                                                  log(imgUrl == null? 'null':'not');
                                                   return GestureDetector(
-                                                    onTap: () {},
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) => ItemView(
+                                                                itemId: bestSellingItems
+                                                                    .elementAt(index)
+                                                                    .itemId)));
+                                                    },
                                                     child: Padding(
                                                         padding:
                                                             const EdgeInsets

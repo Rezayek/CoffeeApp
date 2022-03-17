@@ -5,7 +5,9 @@ import 'package:coffee_app/services/firebase_database/categorie_item_model.dart'
 import 'package:coffee_app/services/firebase_database/firebase_database.dart';
 import 'package:coffee_app/views/app_main_views/home_view.dart';
 import 'package:coffee_app/views/app_main_views/navigation_Ui/navigation_view.dart';
+import 'package:coffee_app/views/app_main_views/sub_views/item_view.dart';
 import 'package:coffee_app/views/widgets/addBtn.dart';
+import 'package:coffee_app/views/widgets/floating_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -23,7 +25,6 @@ class CategorieView extends StatefulWidget {
 
 class _CategorieViewState extends State<CategorieView> {
   final String categorieName;
-  final isDialOpen = ValueNotifier(false);
 
   final FirebaseDatabase _categoriesList = FirebaseDatabase();
   final FirebaseStorageGetPictures _categorieImages =
@@ -83,164 +84,185 @@ class _CategorieViewState extends State<CategorieView> {
                           final categorieItems =
                               snapshot.data as Iterable<CategorieItemModel>;
                           return ListView.builder(
-                            scrollDirection: Axis.vertical,
+                              scrollDirection: Axis.vertical,
                               itemCount: categorieItems.length,
                               itemBuilder: ((context, index) {
-                                return Container(
-                                  height: 170,
-                                  width: 300,
-                                  decoration: BoxDecoration(
-                                      color: blackCoffeeColor.withOpacity(0.6),
-                                      borderRadius: BorderRadius.circular(26)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Row(children: [
-                                      FutureBuilder(
-                                          future: _categorieImages
-                                              .downloarUrlOfItem(
-                                                  imageName: categorieItems
-                                                      .elementAt(index)
-                                                      .photoName,
-                                                  folderPhotoName:
-                                                      categorieItems
-                                                          .elementAt(index)
-                                                          .photoFolder),
-                                          builder: (context, snapshot) {
-                                            switch (snapshot.connectionState) {
-                                              case ConnectionState.waiting:
-                                                return const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                );
-                                              case ConnectionState.done:
-                                                if (snapshot.hasData) {
-                                                  final imageUrl =
-                                                      snapshot.data as String;
-                                                  return Container(
-                                                    height: 155,
-                                                    width: 120,
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: NetworkImage(
-                                                                imageUrl),
-                                                            fit: BoxFit.fill),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(26)),
-                                                  );
-                                                } else {
-                                                  return Container(
-                                                    height: 155,
-                                                    width: 120,
-                                                    decoration: BoxDecoration(
-                                                        image: const DecorationImage(
-                                                            image: AssetImage(
-                                                                'assets/default.jpg'),
-                                                            fit: BoxFit.fill),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(26)),
-                                                  );
-                                                }
-                                              default:
-                                                return const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                );
-                                            }
-                                          }),
-                                      SizedBox(
-                                        width: 160,
-                                        height: 155,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 8.0, bottom: 10.0),
-                                              child: Text(
-                                                categorieItems
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ItemView(
+                                                itemId: categorieItems
                                                     .elementAt(index)
-                                                    .itemName,
-                                                style: const TextStyle(
-                                                    color: coffeeCakeColor,
-                                                    fontSize: 23,
-                                                    fontWeight:
-                                                        FontWeight.w500),
+                                                    .itemId)));
+                                  },
+                                  child: Container(
+                                    height: 170,
+                                    width: 300,
+                                    decoration: BoxDecoration(
+                                        color:
+                                            blackCoffeeColor.withOpacity(0.6),
+                                        borderRadius:
+                                            BorderRadius.circular(26)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Row(children: [
+                                        FutureBuilder(
+                                            future: _categorieImages
+                                                .downloarUrlOfItem(
+                                                    imageName: categorieItems
+                                                        .elementAt(index)
+                                                        .photoName,
+                                                    folderPhotoName:
+                                                        categorieItems
+                                                            .elementAt(index)
+                                                            .photoFolder),
+                                            builder: (context, snapshot) {
+                                              switch (
+                                                  snapshot.connectionState) {
+                                                case ConnectionState.waiting:
+                                                  return const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  );
+                                                case ConnectionState.done:
+                                                  if (snapshot.hasData) {
+                                                    final imageUrl =
+                                                        snapshot.data as String;
+                                                    return Container(
+                                                      height: 155,
+                                                      width: 120,
+                                                      decoration: BoxDecoration(
+                                                          image: DecorationImage(
+                                                              image:
+                                                                  NetworkImage(
+                                                                      imageUrl),
+                                                              fit: BoxFit.fill),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      26)),
+                                                    );
+                                                  } else {
+                                                    return Container(
+                                                      height: 155,
+                                                      width: 120,
+                                                      decoration: BoxDecoration(
+                                                          image: const DecorationImage(
+                                                              image: AssetImage(
+                                                                  'assets/default.jpg'),
+                                                              fit: BoxFit.fill),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      26)),
+                                                    );
+                                                  }
+                                                default:
+                                                  return const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  );
+                                              }
+                                            }),
+                                        SizedBox(
+                                          width: 160,
+                                          height: 155,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 8.0, bottom: 10.0),
+                                                child: Text(
+                                                  categorieItems
+                                                      .elementAt(index)
+                                                      .itemName,
+                                                  style: const TextStyle(
+                                                      color: coffeeCakeColor,
+                                                      fontSize: 23,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
                                               ),
-                                            ),
-                                            SizedBox(
-                                              height: 25,
-                                              child: Row(
-                                                children: [
-                                                  const SizedBox(
-                                                    width: 28,
-                                                  ),
-                                                  const Text(
-                                                    'Rating: ',
-                                                    style: TextStyle(
-                                                        color: coffeeCakeColor,
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  const Icon(
-                                                    Icons.star,
-                                                    color: Color.fromARGB(
-                                                        255, 243, 228, 23),
-                                                    size: 18,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                  Text(
-                                                      categorieItems
-                                                          .elementAt(index)
-                                                          .itemRating,
-                                                      style: const TextStyle(
+                                              SizedBox(
+                                                height: 25,
+                                                child: Row(
+                                                  children: [
+                                                    const SizedBox(
+                                                      width: 28,
+                                                    ),
+                                                    const Text(
+                                                      'Rating: ',
+                                                      style: TextStyle(
                                                           color:
                                                               coffeeCakeColor,
                                                           fontSize: 18,
                                                           fontWeight:
-                                                              FontWeight.w400)),
-                                                ],
+                                                              FontWeight.w400),
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    const Icon(
+                                                      Icons.star,
+                                                      color: Color.fromARGB(
+                                                          255, 243, 228, 23),
+                                                      size: 18,
+                                                    ),
+                                                    const SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Text(
+                                                        categorieItems
+                                                            .elementAt(index)
+                                                            .itemRating,
+                                                        style: const TextStyle(
+                                                            color:
+                                                                coffeeCakeColor,
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400)),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              'Prize: ' +
-                                                  categorieItems
-                                                      .elementAt(index)
-                                                      .itemPrize,
-                                              style: const TextStyle(
-                                                  color: coffeeCakeColor,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              'Countrie: ' +
-                                                  categorieItems
-                                                      .elementAt(index)
-                                                      .itemCountrie,
-                                              style: const TextStyle(
-                                                  color: coffeeCakeColor,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ],
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                'Prize: ' +
+                                                    categorieItems
+                                                        .elementAt(index)
+                                                        .itemPrize,
+                                                style: const TextStyle(
+                                                    color: coffeeCakeColor,
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                'Countrie: ' +
+                                                    categorieItems
+                                                        .elementAt(index)
+                                                        .itemCountrie,
+                                                style: const TextStyle(
+                                                    color: coffeeCakeColor,
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      const AddBtn()
-                                    ]),
+                                        const AddBtn()
+                                      ]),
+                                    ),
                                   ),
                                 );
                               }));
@@ -263,59 +285,7 @@ class _CategorieViewState extends State<CategorieView> {
           ],
         ),
       ),
-      floatingActionButton: WillPopScope(
-        onWillPop: () async {
-          if (isDialOpen.value) {
-            isDialOpen.value = false;
-            return false;
-          } else {
-            return true;
-          }
-        },
-        child: SpeedDial(
-          animatedIcon: AnimatedIcons.list_view,
-          backgroundColor: arabicCoffeeColor.withOpacity(0.6),
-          overlayColor: Colors.black,
-          overlayOpacity: 0.3,
-          openCloseDial: isDialOpen,
-          spacing: 10,
-          children: [
-            SpeedDialChild(
-              child: const Icon(Icons.home),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MainNavigationView(
-                              currentIndex: 0,
-                            )));
-              },
-            ),
-            SpeedDialChild(
-              child: const Icon(Icons.shopping_bag),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MainNavigationView(
-                              currentIndex: 1,
-                            )));
-              },
-            ),
-            SpeedDialChild(
-              child: const Icon(Icons.search),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MainNavigationView(
-                              currentIndex: 2,
-                            )));
-              },
-            ),
-          ],
-        ),
-      ),
+      floatingActionButton: FloatingBtn(),
     );
   }
 }
