@@ -6,6 +6,8 @@ import 'package:coffee_app/constants/storage_folders_name.dart';
 import 'package:coffee_app/handle_firestorage_pictures/firebase_storage_get_pictures.dart';
 import 'package:coffee_app/services/auth/auth_service.dart';
 import 'package:coffee_app/services/auth/cloud_user/firabase_user_cloud_storage.dart';
+import 'package:coffee_app/services/cart_local_database/cart_database.dart';
+import 'package:coffee_app/services/cart_local_database/cart_database_exception.dart';
 import 'package:coffee_app/services/firebase_database_items/categorie_item_model_constants.dart';
 import 'package:coffee_app/services/firebase_database_items/firebase_database.dart';
 import 'package:coffee_app/services/firebase_database_reviews/review_exceptions.dart';
@@ -28,6 +30,7 @@ class ItemView extends StatefulWidget {
 class _ItemViewState extends State<ItemView> {
   late final TextEditingController _reviewController;
   String get _userId => AuthService.firebase().currentUser!.id;
+  late final CartDatabase _cartItems;
   final FirebaseUserCloudStorage _user = FirebaseUserCloudStorage();
   final ReviewsDatabase _reviews = ReviewsDatabase();
   String currentRate = "Rate";
@@ -47,6 +50,7 @@ class _ItemViewState extends State<ItemView> {
   _ItemViewState({required this.itemId});
   @override
   void initState() {
+    _cartItems = CartDatabase();
     _reviewController = TextEditingController();
     super.initState();
   }
@@ -270,7 +274,21 @@ class _ItemViewState extends State<ItemView> {
                                           ],
                                         ),
                                       ),
-                                      AddBtn(),
+                                      InkWell(
+                                        onTap: () async{
+                                          try {
+                                            await _cartItems.createCartItem(
+                                                userId: _userId,
+                                                itemId: itemId,
+                                                itemName: realData[itemNameFire],
+                                                itemCost: int.parse(
+                                                    realData[itemPrizeFire]),
+                                                itemStock: 100);
+                                          } on ItemAleardyAdded {
+                                            showErrorDialog(context, 'Already added');
+                                          }
+                                        },
+                                        child: AddBtn()),
                                     ],
                                   ),
                                 ),
@@ -355,7 +373,7 @@ class _ItemViewState extends State<ItemView> {
                       autocorrect: true,
                       maxLength: 200,
                       maxLines: 4,
-                      style: TextStyle(fontSize: 18, color: blackCoffeeColor),
+                      style: const TextStyle(fontSize: 18, color: blackCoffeeColor),
                     ),
                     const SizedBox(
                       height: 8,

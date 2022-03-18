@@ -1,8 +1,12 @@
 import 'package:coffee_app/constants/colors.dart';
 import 'package:coffee_app/constants/storage_folders_name.dart';
 import 'package:coffee_app/handle_firestorage_pictures/firebase_storage_get_pictures.dart';
+import 'package:coffee_app/services/auth/auth_service.dart';
+import 'package:coffee_app/services/cart_local_database/cart_database.dart';
+import 'package:coffee_app/services/cart_local_database/cart_database_exception.dart';
 import 'package:coffee_app/services/firebase_database_items/categorie_item_model.dart';
 import 'package:coffee_app/services/firebase_database_items/firebase_database.dart';
+import 'package:coffee_app/utilities/dialogs/error_dialog.dart';
 import 'package:coffee_app/views/app_main_views/home_view.dart';
 import 'package:coffee_app/views/app_main_views/navigation_Ui/navigation_view.dart';
 import 'package:coffee_app/views/app_main_views/sub_views/item_view.dart';
@@ -24,13 +28,21 @@ class CategorieView extends StatefulWidget {
 }
 
 class _CategorieViewState extends State<CategorieView> {
+  String get userId => AuthService.firebase().currentUser!.id;
   final String categorieName;
-
+  late final CartDatabase _cartItems;
   final FirebaseDatabase _categoriesList = FirebaseDatabase();
   final FirebaseStorageGetPictures _categorieImages =
       FirebaseStorageGetPictures(folderName: categorieFolderName);
 
   _CategorieViewState({required this.categorieName});
+
+  @override
+  void initState() {
+    _cartItems = CartDatabase();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -275,7 +287,27 @@ class _CategorieViewState extends State<CategorieView> {
                                             ],
                                           ),
                                         ),
-                                        const AddBtn()
+                                        InkWell(
+                                            onTap: () async {
+                                              try {
+                                                await _cartItems.createCartItem(
+                                                    userId: userId,
+                                                    itemId: categorieItems
+                                                        .elementAt(index)
+                                                        .itemId,
+                                                    itemName: categorieItems
+                                                        .elementAt(index)
+                                                        .itemName,
+                                                    itemCost: int.parse(
+                                                        categorieItems
+                                                            .elementAt(index)
+                                                            .itemPrize),
+                                                    itemStock: 100);
+                                              } on ItemAleardyAdded  {
+                                                showErrorDialog(context, 'Already added');
+                                              }
+                                            },
+                                            child: const AddBtn())
                                       ]),
                                     ),
                                   ),
