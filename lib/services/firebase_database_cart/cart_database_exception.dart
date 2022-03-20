@@ -1,0 +1,2 @@
+
+class FailedToSendCart implements Exception{}

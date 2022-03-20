@@ -5,6 +5,7 @@ import 'package:coffee_app/services/auth/bloc/auth_event.dart';
 import 'package:coffee_app/services/auth/cloud_user/auth_user_data.dart';
 import 'package:coffee_app/services/auth/cloud_user/firabase_user_cloud_storage.dart';
 import 'package:coffee_app/utilities/dialogs/logout_dialog.dart';
+import 'package:coffee_app/views/drawer_views/inner_views/history_purchase.dart';
 import 'package:coffee_app/views/drawer_views/inner_views/manage_account.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +39,7 @@ class _DrawerMainViewState extends State<DrawerMainView> {
               case ConnectionState.done:
                 if (snapshot.hasData) {
                   final userInfo = snapshot.data as Iterable<AuthUserData>;
-                  
+
                   return ListView(
                     children: [
                       UserAccountsDrawerHeader(
@@ -104,12 +105,13 @@ class _DrawerMainViewState extends State<DrawerMainView> {
                             ),
                           ),
                           onTap: () {
-                            
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    ManageAccountView(userId: userInfo.elementAt(0).userId,userDataId: userInfo.elementAt(0).userDataId ),
+                                builder: (context) => ManageAccountView(
+                                    userId: userInfo.elementAt(0).userId,
+                                    userDataId:
+                                        userInfo.elementAt(0).userDataId),
                               ),
                             );
                           },
@@ -166,7 +168,12 @@ class _DrawerMainViewState extends State<DrawerMainView> {
                               ),
                             ),
                           ),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HistoryPurchases()));
+                          },
                         ),
                       ),
                       InkWell(

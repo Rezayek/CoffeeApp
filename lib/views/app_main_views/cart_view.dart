@@ -5,6 +5,8 @@ import 'package:coffee_app/handle_firestorage_pictures/firebase_storage_get_pict
 import 'package:coffee_app/services/cart_local_database/cart_database.dart';
 import 'package:coffee_app/services/cart_local_database/cart_database_exception.dart';
 import 'package:coffee_app/services/cart_local_database/cart_database_model.dart';
+import 'package:coffee_app/services/firebase_database_cart/cart_database_exception.dart';
+import 'package:coffee_app/services/firebase_database_cart/cart_fire_database.dart';
 import 'package:coffee_app/services/firebase_database_items/categorie_item_model.dart';
 import 'package:coffee_app/services/firebase_database_items/categorie_item_model_constants.dart';
 import 'package:coffee_app/services/firebase_database_items/firebase_database.dart';
@@ -68,7 +70,6 @@ class _CartViewState extends State<CartView> {
                           snapshot.data as Iterable<CartDatabaseModel>;
                       return Container(
                         height: 650,
-                        
                         width: MediaQuery.of(context).size.width * 0.9,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -289,53 +290,98 @@ class _CartViewState extends State<CartView> {
                             Container(
                               height: 100,
                               width: 280,
-                              child: items.length > 0? Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all(Colors.greenAccent),
-                                      ),
-                                    onPressed: () {},
-                                    child: const SizedBox(
-                                      height: 50,
-                                      width: 90,
-                                      child: Center(
-                                        child: Text(
-                                          'Buy',
-                                          style: TextStyle(fontSize: 25),
+                              child: items.length > 0
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        ElevatedButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    Colors.greenAccent),
+                                          ),
+                                          onPressed: () async {
+                                            try {
+                                              final cartFire =
+                                                  CartFireDatabase();
+                                              cartFire.creatCollection(
+                                                  userId: items
+                                                      .elementAt(0)
+                                                      .userId);
+                                              for (int i = 0;
+                                                  i < items.length;
+                                                  i++) {
+                                                await cartFire.createCartItems(
+                                                    itemId: items
+                                                        .elementAt(i)
+                                                        .itemId,
+                                                    userId: items
+                                                        .elementAt(i)
+                                                        .userId,
+                                                    itemName: items.elementAt(i).itemName,    
+                                                    itemPrize: items
+                                                        .elementAt(i)
+                                                        .itemCost
+                                                        .toString(),
+                                                    itemQte: items
+                                                        .elementAt(i)
+                                                        .itemStock
+                                                        .toString());
+                                              }
+
+                                              await _cartItems.deleteAllItems();
+
+                                            } on FailedToSendCart {
+                                              showErrorDialog(
+                                                  context, 'Failed to send ');
+                                            }
+                                          },
+                                          child: const SizedBox(
+                                            height: 50,
+                                            width: 90,
+                                            child: Center(
+                                              child: Text(
+                                                'Buy',
+                                                style: TextStyle(fontSize: 25),
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 25,
-                                  ),
-                                  ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 245, 50, 50)),
-                                      ),
-                                    onPressed: () async {
-                                      try {
-                                        await _cartItems.deleteAllItems();
-                                      } catch (e) {
-                                        showErrorDialog(context, 'try again');
-                                      }
-                                    },
-                                    child: const SizedBox(
-                                      height: 50,
-                                      width: 90, 
-                                      child: Center(
-                                        child: Text(
-                                          'Delete',
-                                          style: TextStyle(fontSize: 25),
+                                        const SizedBox(
+                                          width: 25,
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ): Container(),
+                                        ElevatedButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    const Color.fromARGB(
+                                                        255, 245, 50, 50)),
+                                          ),
+                                          onPressed: () async {
+                                            try {
+                                              await _cartItems.deleteAllItems();
+                                            } catch (e) {
+                                              showErrorDialog(
+                                                  context, 'try again');
+                                            }
+                                          },
+                                          child: const SizedBox(
+                                            height: 50,
+                                            width: 90,
+                                            child: Center(
+                                              child: Text(
+                                                'Delete',
+                                                style: TextStyle(fontSize: 25),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Container(),
                             )
                           ],
                         ),
