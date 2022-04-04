@@ -3,6 +3,7 @@
 import 'package:coffee_app/constants/colors.dart';
 import 'package:coffee_app/views/app_main_views/cart_view.dart';
 import 'package:coffee_app/views/app_main_views/home_view.dart';
+import 'package:coffee_app/views/app_main_views/search_test.dart';
 import 'package:coffee_app/views/app_main_views/search_view.dart';
 import 'package:coffee_app/views/drawer_views/drawer_main_view.dart';
 import 'package:flutter/material.dart';

@@ -1,42 +1,23 @@
-//import 'dart:developer';
-
-import 'package:coffee_app/services/search_history_local_database/search_history_database.dart';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
-
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
-class SearchView extends StatefulWidget {
-  SearchView({Key? key}) : super(key: key);
+class TestSeach extends StatefulWidget {
+  TestSeach({Key? key}) : super(key: key);
 
   @override
-  State<SearchView> createState() => _SearchViewState();
+  State<TestSeach> createState() => _TestSeachState();
 }
 
-class _SearchViewState extends State<SearchView> {
+class _TestSeachState extends State<TestSeach> {
   static const historyLength = 5;
 
   final List<String> _searchHistory = [];
 
   late List<String> filteredSearchHistory;
   late String selectedTerm;
-
-  late SearchHistoryDatabase _historySearch;
-
-  void getTerms() async {
-    final terms = await _historySearch.getAllTerms();
-    for (int index = 0; index < terms.length; index++) {
-      _searchHistory.add(terms.elementAt(index).searchTerm);
-    }
-  }
-
-  void deleteTerms() async {
-    await _historySearch.deleteAllTerms();
-    await _historySearch.createTerms(newTerms: _searchHistory);
-  }
-
   List<String> filterSearchTerms({required String filter}) {
-    getTerms();
     if (filter.isNotEmpty) {
       return _searchHistory.reversed
           .where((term) => term.startsWith(filter))
@@ -56,25 +37,21 @@ class _SearchViewState extends State<SearchView> {
       _searchHistory.removeRange(0, _searchHistory.length - historyLength);
     }
     filteredSearchHistory = filterSearchTerms(filter: '');
-    deleteTerms();
   }
 
   void deleteSearchTerm(String term) {
     _searchHistory.removeWhere((t) => t == term);
     filteredSearchHistory = filterSearchTerms(filter: '');
-    
   }
 
   void putSearchTermFirst(String term) {
     deleteSearchTerm(term);
     addSearchTerm(term);
-    deleteTerms();
   }
 
   late FloatingSearchBarController controller;
   @override
   void initState() {
-    _historySearch = SearchHistoryDatabase();
     controller = FloatingSearchBarController();
     selectedTerm = '';
     filteredSearchHistory = filterSearchTerms(filter: '');
@@ -83,7 +60,6 @@ class _SearchViewState extends State<SearchView> {
 
   @override
   void dispose() {
-    
     controller.dispose();
     super.dispose();
   }
@@ -100,7 +76,7 @@ class _SearchViewState extends State<SearchView> {
         physics: const BouncingScrollPhysics(),
         title: Text(
           selectedTerm,
-          style: const TextStyle(fontSize: 22),
+          style: Theme.of(context).textTheme.headline2,
         ),
         hint: 'search',
         actions: [
@@ -150,7 +126,9 @@ class _SearchViewState extends State<SearchView> {
                     },
                   );
                 } else {
-
+                  
+                    log(filteredSearchHistory.first);
+                  
                   return Column(
                     mainAxisSize: MainAxisSize.min,
                     children: filteredSearchHistory
@@ -164,16 +142,13 @@ class _SearchViewState extends State<SearchView> {
                                 setState(() {
                                   deleteSearchTerm(term);
                                 });
-                                deleteTerms();
                               },
                             ),
                             onTap: () {
-                              
                               setState(() {
                                 putSearchTermFirst(term);
                                 selectedTerm = term;
                               });
-                              deleteTerms();
                               controller.clear();
                             },
                           ),
